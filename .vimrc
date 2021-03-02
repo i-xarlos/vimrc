@@ -149,7 +149,7 @@ if liquid_ext =~ '\(ht\|x\)ml'
 elseif liquid_ext =~ 'css'
   set commentstring=/*%s*/
 endif
-
+"
 " --- vim go (polyglot) settings.
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
