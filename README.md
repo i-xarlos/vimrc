@@ -1,7 +1,8 @@
 # vimrc
 
 ## CocConfig
-`{
+---
+{
   "explorer.width": 30,
   "explorer.autoExpandMaxDepth": 40,
   "explorer.icon.enableNerdfont": true,
@@ -10,4 +11,5 @@
     "<cr>": ["expandable?", "expand", "open"],
     "v": "open:vsplit"
   },
-}`
+}
+---
