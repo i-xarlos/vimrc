@@ -1,0 +1,20 @@
+{
+"coc.preferences.formatOnSaveFiletypes": [
+    "python",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "scss",
+    "css",
+    "php",
+    "json"
+  ],
+  "tsserver.log": "verbose",
+  "tsserver.trace.server": "verbose",
+  "explorer.width": 35,
+  "explorer.autoExpandMaxDepth": 40,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": false,
+  "explorer.file.showHiddenFiles": true
+}
