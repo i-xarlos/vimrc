@@ -7,7 +7,7 @@ if ($host.Name -eq 'ConsoleHost')
 }
 
 Import-Module posh-git
-$env:POSH_GIT_ENABLED = $true
+#$env:POSH_GIT_ENABLED = $true
 
 
 Import-Module -Name Terminal-Icons
@@ -15,6 +15,9 @@ Import-Module -Name Terminal-Icons
 # ================
 # History path
 # C:\Users\GilCarlo\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+#
+# Run as admin
+# Add-MpPreference -ExclusionPath "$env:POSH_PATH\oh-my-posh.exe"
 # ================
 
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\M365Princess.Carlos.omp.json" | Invoke-Expression
