@@ -1,75 +1,14 @@
-call plug#begin("~/.vim/plugged")
-" Plugin Section
-" theme
-Plug 'morhetz/gruvbox'
-Plug 'dracula/vim'
-Plug 'joshdick/onedark.vim'
-Plug 'luochen1990/rainbow' 
-Plug 'ayu-theme/ayu-vim'
-Plug 'ntk148v/vim-horizon'
-Plug 'mhartington/oceanic-next'
-Plug 'rakr/vim-one'
-"Plug 'sheerun/vim-polyglot'
-"
-"tools
-"Plug 'scrooloose/nerdtree'
-"Plug 'ryanoasis/vim-devicons'
-Plug 'scrooloose/nerdcommenter'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-liquid'
-Plug 'tpope/vim-markdown' 
-
-"Navigation
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" colorscheme for files
-"Plug 'Xuyuanp/nerdtree-git-plugin'
-"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-"search
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'easymotion/vim-easymotion'
-
-" editorconfig
-"Plug 'editorconfig/editorconfig-vim'
-
-Plug 'reedes/vim-litecorrect'
-Plug 'reedes/vim-wordy'
-Plug 'reedes/vim-pencil'
-
-"intellisense
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'kiteco/vim-plugin' 
-
-"Plug 'neoclide/coc.nvim', {'branch':'release','do': 'yarn install --frozen-lockfile'}
-" Plug 'dense-analysis/ale' 
-"typescript suport
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'tpope/vim-surround'
-"JSX
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-
-call plug#end()
-
-" Set compatibility to Vim only
 set nocompatible
 set nolist
 set rnu
-
+set buftype=
 set number
-set hidden
 set nowrap
 set mouse=a
 set numberwidth=1
 set clipboard=unnamed
 set encoding=utf-8
-scriptencoding latin1
 set pumheight=10
-set fileencodings=utf-8
 set iskeyword+=-
 set cursorline
 set t_Co=256
@@ -77,6 +16,7 @@ set conceallevel=0
 set tabstop=2
 set shiftwidth=2
 set smarttab
+set cindent
 set expandtab
 set smartindent
 set autoindent
@@ -87,14 +27,26 @@ set showmatch
 set laststatus=2
 set updatetime=300
 set timeoutlen=500
-set formatoptions-=cro
 set clipboard=unnamedplus
 set ruler
 set relativenumber
 set sw=2
 set cursorline
 set tabstop=2
-set termguicolors
+set belloff=all
+set signcolumn=yes
+set cmdheight=2
+set backspace=indent,eol,start
+set ffs=unix,dos
+
+" TextEdit might fail if hidden is not set.
+set hidden
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" json files comments
+autocmd FileType json syntax match Comment +\/\/.\+$+
+autocmd BufRead,BufNewFile *.json set filetype=jsonc
 
 " Turn off backup
 set nobackup
@@ -106,102 +58,96 @@ set noshowmode
 "open split panes to right and below
 set splitright
 set splitbelow
-
+set modifiable
+" Set compatibility to Vim only
 " Turn on syntax highlighting
 syntax on
-"colorscheme onedark
-"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-"let g:oceanic_next_terminal_bold = 1
-"let g:oceanic_next_terminal_italic = 1
-"colorscheme OceanicNext
-colorscheme one
-"set t_8b=^[[48;2;%lu;%lu;%lum
-"set t_8f=^[[38;2;%lu;%lu;%lum
-"one#highlight(group, fg, bg, attribute)
-"call one#highlight('', 'cccccc', '666666', 'none')
-"set background=dark " for the dark version
-"colorscheme horizon
-"colorscheme dracula
-"colorscheme gruvbox
-highlight Pmenu ctermbg=gray guibg=gray
-highlight PmenuSel ctermbg=black guibg=black
-highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
-highlight link multiple_cursors_visual Visual
-autocmd CursorHold * silent call CocActionAsync('highlight')
-" ayu
-let ayucolor="dark"
-let g:onedark_terminal_italics = 1
-let g:rainbow_active = 1
-let g:onedark_color_overrides = {
-\ "black": {"gui": "#2F343F", "cterm": "235", "cterm16": "0" },
-\ "purple": { "gui": "#C678DF", "cterm": "170", "cterm16": "5" }
-\}
 
-" vim markdown
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'liquid']
-let g:markdown_syntax_conceal = 0
-let g:markdown_minlines = 100
 
-" Set native comment markers in Liquid files
-let liquid_ext = expand('%:e:e')
-if liquid_ext =~ '\(ht\|x\)ml'
-  set commentstring=<!--%s-->
-elseif liquid_ext =~ 'css'
-  set commentstring=/*%s*/
-endif
-"
-" --- vim go (polyglot) settings.
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_types = 1
-let g:go_highlight_function_parameters = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_generate_tags = 1
-let g:go_highlight_format_strings = 1
-let g:go_highlight_variable_declarations = 1
-let g:go_auto_sameids = 1
 
-" Better nav for omnicomplete
-inoremap <expr> <c-j> ("\<C-n>")
-inoremap <expr> <c-k> ("\<C-p>")
+call plug#begin()
 
-" Use alt + hjkl to resize windows
-nnoremap <M-j>    :resize -2<CR>
-nnoremap <M-k>    :resize +2<CR>
-nnoremap <M-h>    :vertical resize -2<CR>
-nnoremap <M-l>    :vertical resize +2<CR>
+	"themes
+	Plug 'gruvbox-community/gruvbox'
+	Plug 'sainnhe/gruvbox-material' 
+	
 
-" I hate escape more than anything else
-inoremap jk <Esc>
-inoremap kj <Esc>
+	"Markdown and lua files
+	Plug 'tpope/vim-liquid'
+	Plug 'tpope/vim-markdown'
 
-" Easy CAPS
-inoremap <c-u> <ESC>viwUi
-nnoremap <c-u> viwU<Esc>
+	"Navigation
+	Plug 'vim-airline/vim-airline'
+	Plug 'vim-airline/vim-airline-themes'
 
-" TAB in general mode will move to text buffer
-nnoremap <TAB> :bnext<CR>
-" SHIFT-TAB will go back
-nnoremap <S-TAB> :bprevious<CR>
+	" Pairs
+	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+	Plug 'p00f/nvim-ts-rainbow'
 
-" Alternate way to quit
-nnoremap <C-Q> :wq!<CR>
+	"Lint
+	Plug 'w0rp/ale'
 
-" Better tabbing
-vnoremap < <gv
-vnoremap > >gv
+	"JSX
+	Plug 'pangloss/vim-javascript'
+	Plug 'mxw/vim-jsx'
+	
+	"tools
+	Plug 'scrooloose/nerdcommenter' "comment text
+	Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
+	
+call plug#end()
 
-" Navigate to line
-nnoremap <Leader>o o<Esc>^Da
-nnoremap <Leader>O O<Esc>^Da
 
-" Explorer
+ if has('termguicolors')
+        set termguicolors
+ endif
 
+" For dark version.
+set background=dark
+
+let g:gruvbox_material_better_performance = 1
+let g:gruvbox_material_cursor = 'blue'
+let g:gruvbox_material_transparent_background = 2
+let g:airline_theme = 'gruvbox_material'
+
+colorscheme gruvbox-material
+
+let mapleader = " "
+"nnoremap <Leader>f :lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ winblend = 10 }))<cr>
+
+" Use a line cursor within insert mode and a block cursor everywhere else.
+" "
+" " Reference chart of values:
+" "   Ps = 0  -> blinking block.
+" "   Ps = 1  -> blinking block (default).
+" "   Ps = 2  -> steady block.
+" "   Ps = 3  -> blinking underline.
+" "   Ps = 4  -> steady underline.
+" "   Ps = 5  -> blinking bar (xterm).
+" "   Ps = 6  -> steady bar (xterm).
+ let &t_SI = "\e[6 q"
+ let &t_EI = "\e[2 q"
+
+
+ "coc.nvim config 
+ let g:coc_global_extensions = [
+    \'coc-css', 
+    \'coc-emmet',
+    \'coc-html', 
+    \'coc-json', 
+    \'coc-prettier', 
+    \'coc-tsserver',
+    \'coc-pairs',
+    \'coc-eslint',
+    \'coc-vetur',
+    \'coc-explorer',
+    \'coc-git',
+    \'coc-vimlsp',
+    \'coc-diagnostic',
+\]
 
 let g:rainbow_conf = {
 \	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
@@ -234,6 +180,24 @@ let g:rainbow_conf = {
 \	}
 \}
 
+"airline_powerline_fonts
+let g:airline_powerline_fonts = 1
+" enable tabline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
+
+highlight Pmenu ctermbg=gray guibg=gray
+highlight PmenuSel ctermbg=black guibg=black
+highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
+highlight link multiple_cursors_visual Visual
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+nmap <Leader>w :wq!<CR>
+nmap <Leader>q :q!<CR>
+nmap <Leader>c :%s/\r//g<CR>
 
 nmap <space>e :CocCommand explorer<CR>
 nmap <space>el :CocList explPresets<CR>
@@ -242,16 +206,13 @@ autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | end
 
 " turn terminal to normal mode with escape
 tnoremap <Esc> <C-\><C-n>
-"
-" start terminal in insert mode
-au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 
-" open terminal on ctrl+n
+" open terminal on leader+t
 function! OpenTerminal()
     split term://Powershell
-          resize 10
+          vertical resize +50
 endfunction
-nnoremap <c-n> :call OpenTerminal()<CR>  
+nnoremap <Leader>t :call OpenTerminal()<CR> 
 
 " use alt+hjkl to move between split/vsplit panels
 tnoremap <A-h> <C-\><C-n><C-w>h
@@ -262,51 +223,6 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
-
-"search config
-nnoremap <C-p> :FZF<CR>
-
-let g:fzf_action = { 
-			\'ctrl-t': 'tab split',  
-			\'ctrl-s': 'split', 
-			\'ctrl-v': 'vsplit'
-			\} 
-
-
-"coc.nvim config 
-let g:coc_global_extensions = [
-			\'coc-css', 
-			\'coc-emmet',
-			\'coc-html', 
-			\'coc-json', 
-			\'coc-prettier', 
-			\'coc-tsserver',
-			\'coc-pairs',
-			\'coc-eslint',
-			\'coc-vetur',
-			\'coc-explorer',
-			\'coc-git',
-			\'coc-vimlsp',
-			\'coc-diagnostic',
-			\]
-
-"Use 'coc-snippets' for custom snippets
-":CocInstall coc-snippets // only edit
-":CocCommand snippets.editSnippets
-
-"set encoding=utf8
-let g:airline_powerline_fonts = 1
-
-"prettier
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-
-let mapleader=" "
-nmap <Leader>s <Plug>(easymotion-s2)
-"nmap <Leader>nt :NERDTreeFind<CR>
-
-nmap <Leader>w :wq!<CR>
-nmap <Leader>q :q!<CR>
 
 nmap <Leader>gd <Plug>(coc-definition)!
 nmap <Leader>gr <Plug>(coc-references)
@@ -335,105 +251,14 @@ nnoremap <Leader>ee oif err != nil {<CR>log.Fatalf("%+v\n", err)<CR>}<CR><esc>kk
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-" kite
-let g:kite_supported_languages = ['javascript']
-let g:kite_auto_complete=0
-set completeopt+=preview
+" TAB in general mode will move to text buffer
+nnoremap <TAB> :bnext<CR>
+" SHIFT-TAB will go back
+nnoremap <S-TAB> :bprevious<CR>
 
-" set not use arrows for normal mode
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
 
-" j/k will move virtual lines (lines that wrap)
-noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
-noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
-
-" SELECT helper with tabs
-" always show signcolumns
-set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" enable tabline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
-let g:airline#extensions#tabline#right_sep = ''
-let g:airline#extensions#tabline#right_alt_sep = ''
-
-" enable powerline fonts
-let g:airline_powerline_fonts = 1
-"set guifont=Cascadia\ Code\ Pl\ Types:h11
-let g:webdevicons_enable = 1
-let g:webdevicons_enable_nerdtree = 1
-"let g:airline_left_sep = ''
-"let g:airline_right_sep = ''
-
-" Switch to your current theme
-let g:airline_theme = 'night_owl'
-
-" clear data files
-	" C:\Users\ixarl\AppData\Local\nvim-data\swap
-
-" Set native comment markers in Liquid files
-let liquid_ext = expand('%:e:e')
-if liquid_ext =~ '\(ht\|x\)ml'
-  set commentstring=<!--%s-->
-elseif liquid_ext =~ 'css'
-  set commentstring=/*%s*/
-endif
-
-
-" Extend vim-liquid filetype setting for CSS and Javascript files
-au BufNewFile,BufRead *.css,*.scss,*.js
-  \ if getline(1) == '---' | set ft=liquid | endif
-
-autocmd FileType markdown,text,liquid
-  \ setlocal nocursorline nocursorcolumn |
-  \ call textobj#sentence#init()
-
-let g:pencil#wrapModeDefault = 'soft'
-let g:pencil#textwidth = 80
-let g:pencil#mode_indicators = {'hard': 'H', 'auto': 'A', 'soft': 'S', 'off': '',}
-
-augroup Pencil
-  autocmd!
-  autocmd FileType markdown,liquid
-  \ call pencil#init({ 'wrap': 'soft' })
-  autocmd FileType text
-  \ call pencil#init({ 'wrap': 'hard', 'autoformat': 0 })
-augroup END
-
-  augroup LiteCorrect
-    autocmd!
-    autocmd FileType markdown,text,liquid
-    \ call litecorrect#init()
-  augroup END
-
-  augroup Wordy
-    autocmd!
-    autocmd FileType markdown,text,liquid
-    \ nnoremap <buffer> [w :<C-u>PrevWordy<CR>
-    autocmd FileType markdown,text,liquid
-    \ nnoremap <buffer> ]w :<C-u>NextWordy<CR>
-  augroup END
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
