@@ -38,17 +38,15 @@ set belloff=all
 set signcolumn=yes
 set cmdheight=2
 set backspace=indent,eol,start
-set ffs=dos
+set ffs=unix,dos
 set autoread
 set colorcolumn=140
-
-set nofixeol
 
 " TextEdit might fail if hidden is not set.
 set hidden
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
-let g:ale_disable_lsp = 1
+filetype off                  " required
 
 " json files comments
 autocmd FileType json syntax match Comment +\/\/.\+$+
@@ -74,8 +72,6 @@ set modifiable
 if exists("syntax_on")
     syntax reset
 endif
-"syntax reset
-
 " Use new regular expression engine
 set re=0
 
@@ -110,25 +106,18 @@ call plug#begin()
 	Plug 'nvim-lua/plenary.nvim'
 	Plug 'nvim-telescope/telescope.nvim'
 
-  "Prettier
   Plug 'dense-analysis/ale'
-
-  "smooth scrooll
-  Plug 'yonchu/accelerated-smooth-scroll'
-
 call plug#end()
 
 
-if has('termguicolors')
-    set termguicolors
-endif
+ if has('termguicolors')
+        set termguicolors
+ endif
 
 " For dark version.
 set background=dark
 color tokyonight
 
-let g:colorizer_colornames = 1
-let g:colorizer_use_virtual_text = 1
 
 " for gruvbox_material 
 let g:gruvbox_material_better_performance = 1
@@ -164,16 +153,11 @@ function! s:show_documentation()
 endfunction
 
 let g:ale_fixers = {
-\   'javascript': ['prettier', 'eslint'],
-\   'css': ['prettier', 'eslint'],
-\   'typescript': ['prettier', 'eslint'],
-\   'typescriptreact': ['prettier', 'eslint'],
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\   'typescript': ['prettier'],
 \}
 let g:ale_fix_on_save = 1
-let g:ale_linters_explicit = 1
-let g:ale_sign_error = '窱'
-let g:ale_sign_warning = ''
-"let g:ale_javascript_prettier_use_local_config = 1
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -204,7 +188,6 @@ function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
 
 " Use <c-space> to trigger completion.
 if has('nvim')
@@ -305,7 +288,7 @@ let g:rainbow_conf = {
 \}
 
 " python
-let g:python3_host_prog = 'C:\Python310\python.exe'
+let g:python3_host_prog = 'C:\Python39\python.exe'
 set pyxversion=3
 set pyx=3
 
@@ -394,23 +377,11 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-" Change encoding
-" :e! ++enc=utf8
-
-" clear buffers
-nnoremap <Leader>ct :call ClearTerminal()<cr>
-
-function! ClearTerminal()
-  set scrollback=1
-  call feedkeys("\i")
-  call feedkeys("\<C-\>\<C-n>")
-  call feedkeys("\n")
-  sleep 100m
-  set scrollback=10000
-endfunction
+"Prettier
+"let g:prettier#config#end_of_line = get(g:, 'prettier#config#end_of_line', 'crlf')
 
 " tressitter
-"set foldmethod=expr
+set foldmethod=expr
 "set foldexpr=nvim_treesitter#foldexpr()
 
 lua <<EOF
@@ -436,12 +407,12 @@ require'nvim-treesitter.configs'.setup {
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
   highlight = { enable = true, },
-  -- indent = { enable = false,  },
+  indent = { enable = true, },
   auto_install = true,
   rainbow = {
     enable = true,
     extended_mode = true, 
-    max_file_lines = 500, 
+    max_file_lines = 1000, 
   },
   additional_vim_regex_highlighting = false
 }
